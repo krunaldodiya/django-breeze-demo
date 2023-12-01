@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.staticfiles",
     "inertia",
     "django_vite",
+    "home",
 ]
 
 MIDDLEWARE = [
@@ -121,6 +123,8 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+STATIC_ROOT = BASE_DIR / "collectedstatic"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -132,11 +136,9 @@ DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "build"
 
 DJANGO_VITE_DEV_MODE = DEBUG
 
+STATICFILES_DIRS = [DJANGO_VITE_ASSETS_PATH]
+
 DJANGO_VITE_DEV_SERVER_PORT = 5173
-
-STATIC_ROOT = BASE_DIR / "core"
-
-STATIC_FILE_DIRECTORIES = [DJANGO_VITE_ASSETS_PATH]
 
 CSRF_HEADER_NAME = "HTTP_X_XSRF_TOKEN"
 

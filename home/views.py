@@ -1,5 +1,6 @@
 from inertia import render
 
 
-def index(request):
+# Create your views here.
+def home(request):
     return render(request, "Welcome")

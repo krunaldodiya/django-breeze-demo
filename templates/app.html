@@ -2,12 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    {% vite_hmr_client %} {% vite_asset 'resources/js/app.js' %}
+    {% vite_hmr_client %} {% vite_asset 'resources/js/app.js' %} {% vite_asset
+    'resources/css/app.css' %}
   </head>
   <body>
-    {% block inertia %}{% endblock %}
+    {% block inertia %} {% endblock %}
   </body>
 </html>

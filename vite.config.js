@@ -24,7 +24,7 @@ export default defineConfig({
     manifest: true,
     outDir: "static/build",
     rollupOptions: {
-      input: ["resources/js/app.js"],
+      input: ["resources/js/app.js", "resources/css/app.css"],
     },
     assetsInlineLimit: 0,
   },
