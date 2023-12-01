@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "inertia",
-    "django_vite",
+    "django_breeze",
 ]
 
 MIDDLEWARE = [
@@ -51,7 +50,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "inertia.middleware.InertiaMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -122,25 +120,26 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATIC_ROOT = BASE_DIR / "collectedstatic"
+STATIC_ROOT = "static"
+
+DJANGO_BREEZE = {
+    "INERTIA": {
+        "LAYOUT": "index.html",
+        "SSR_URL": "http://localhost:13714",
+        "SSR_ENABLED": False,
+    },
+    "DJANGO_VITE": {
+        "DEV_MODE": True,  # vite dev mode, default based on django DEBUG
+        "SERVER_PROTOCOL": "http",
+        "DEV_SERVER_HOST": "localhost",
+        "DEV_SERVER_PORT": 5173,
+        "WS_CLIENT_URL": "@vite/client",
+        "ASSETS_PATH": "static/dist",  # vite build asset path
+        "STATIC_URL_PREFIX": "",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-INERTIA_LAYOUT = "app.html"
-
-DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "build"
-
-DJANGO_VITE_MANIFEST_PATH = DJANGO_VITE_ASSETS_PATH / ".vite" / "manifest.json"
-
-# DJANGO_VITE_DEV_MODE = DEBUG
-
-STATICFILES_DIRS = [DJANGO_VITE_ASSETS_PATH]
-
-DJANGO_VITE_DEV_SERVER_PORT = 5173
-
-CSRF_HEADER_NAME = "HTTP_X_XSRF_TOKEN"
-
-CSRF_COOKIE_NAME = "XSRF-TOKEN"

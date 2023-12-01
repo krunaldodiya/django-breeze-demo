@@ -1,3 +1,4 @@
 django
 inertia-django
 django-vite
+django-breeze
