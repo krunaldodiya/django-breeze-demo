@@ -1,0 +1,14 @@
+{
+  "main.css": {
+    "file": "main-15b8ffb9.css",
+    "src": "main.css"
+  },
+  "main.tsx": {
+    "css": [
+      "main-15b8ffb9.css"
+    ],
+    "file": "main-bdae6fdd.js",
+    "isEntry": true,
+    "src": "main.tsx"
+  }
+}
