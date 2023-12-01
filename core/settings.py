@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "inertia",
     "django_vite",
-    "home",
 ]
 
 MIDDLEWARE = [
