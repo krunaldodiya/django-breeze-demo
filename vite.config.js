@@ -1,4 +1,6 @@
 import vue from "@vitejs/plugin-vue";
+import WindiCSS from "vite-plugin-windicss";
+
 import path from "path";
 import { defineConfig } from "vite";
 
@@ -12,6 +14,7 @@ export default defineConfig({
         },
       },
     }),
+    WindiCSS(),
   ],
   resolve: {
     alias: {
@@ -24,7 +27,10 @@ export default defineConfig({
     manifest: true,
     outDir: "static/build",
     rollupOptions: {
-      input: ["resources/js/app.js", "resources/css/app.css"],
+      input: {
+        js: path.resolve(__dirname, "resources/js/app.js"),
+        css: path.resolve(__dirname, "resources/css/app.css"),
+      },
     },
     assetsInlineLimit: 0,
   },
