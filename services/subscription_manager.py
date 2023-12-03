@@ -6,6 +6,8 @@ import pyotp
 
 from typing import Dict, List
 
+from datetime import datetime
+
 from SmartApi.smartConnect import SmartConnect
 
 from SmartApi.smartWebSocketV2 import SmartWebSocketV2
@@ -29,33 +31,45 @@ class SubscriptionManager:
 
         self.client = self.get_client()
 
-        self.data = self.client.generateSession(
-            self.client_id,
-            self.mpin,
-            self.get_totp(self.totp_key),
-        )
-
-        self.feed_token = self.client.getfeedToken()
-
-        self.sws = self.get_sws()
+        self.ws_clients = {}
 
         self.room_ids: Dict[str, List] = {}
+
+    @property
+    def sws(self):
+        try:
+            today = datetime.now().strftime("%Y-%m-%d")
+
+            return self.ws_clients[today]
+        except KeyError:
+            self.ws_clients = {}
+
+            feed_token = self.client.getfeedToken()
+
+            data = self.client.generateSession(
+                self.client_id,
+                self.mpin,
+                self.get_totp(self.totp_key),
+            )
+
+            auth_token = data["data"]["jwtToken"]
+
+            sws = SmartWebSocketV2(
+                auth_token,
+                self.api_key,
+                self.client_id,
+                feed_token,
+            )
+
+            self.ws_clients[today] = sws
+
+            return sws
 
     def get_totp(self, totp_key):
         return pyotp.TOTP(totp_key).now()
 
     def get_client(self):
         return SmartConnect(self.api_key)
-
-    def get_sws(self):
-        auth_token = self.data["data"]["jwtToken"]
-
-        return SmartWebSocketV2(
-            auth_token,
-            self.api_key,
-            self.client_id,
-            self.feed_token,
-        )
 
     def get_token_list(self, topic):
         token_data = topic.split("_")
