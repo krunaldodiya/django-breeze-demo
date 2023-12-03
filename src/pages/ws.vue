@@ -5,7 +5,7 @@ const form = useForm({
   message: '',
 });
 
-const url = `ws://${window.location.host}/ws/ticker/1`;
+const url = `ws://${window.location.host}/ws/ticker?room_id=1`;
 
 const socket = new WebSocket(url);
 
@@ -26,8 +26,7 @@ socket.onclose = () => {
 };
 
 const submit = (e: Event) => {
-  const message = JSON.stringify({ message: form.message });
-  socket.send(message);
+  socket.send(form.message);
 };
 </script>
 
