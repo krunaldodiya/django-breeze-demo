@@ -1,0 +1,6 @@
+[E 231203 08:18:39 smartWebSocketV2:212] Error occurred during subscribe: 'NoneType' object has no attribute 'send'
+[E 231203 08:21:54 smartWebSocketV2:212] Error occurred during subscribe: 'NoneType' object has no attribute 'send'
+[E 231203 08:22:41 smartWebSocketV2:212] Error occurred during subscribe: 'NoneType' object has no attribute 'send'
+[E 231203 08:24:35 smartWebSocketV2:212] Error occurred during subscribe: 'NoneType' object has no attribute 'send'
+[E 231203 08:36:23 smartWebSocketV2:212] Error occurred during subscribe: 'NoneType' object has no attribute 'send'
+[E 231203 08:39:43 smartWebSocketV2:212] Error occurred during subscribe: 'NoneType' object has no attribute 'send'

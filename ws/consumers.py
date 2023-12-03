@@ -41,6 +41,8 @@ class WebsocketConsumer(WebsocketConsumer):
             for topic in topics:
                 response = self.subscription_manager.subscribe_topic(topic)
 
+                print(response)
+
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_id, {"type": "send_message", "message": response}
                 )
