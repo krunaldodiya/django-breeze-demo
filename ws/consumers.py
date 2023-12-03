@@ -13,7 +13,7 @@ class WebsocketConsumer(WebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.subscription_manager = SubscriptionManager()
+        self.subscription_manager = SubscriptionManager(self)
 
     def get_room_name(self):
         query_string = self.scope["query_string"].decode("utf-8")
@@ -33,8 +33,6 @@ class WebsocketConsumer(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_discard)(
             self.room_name, self.channel_name
         )
-
-        self.close()
 
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
