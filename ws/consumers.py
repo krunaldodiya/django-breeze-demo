@@ -9,6 +9,7 @@ class WebsocketConsumer(WebsocketConsumer):
     room_name = "ticker"
 
     def connect(self):
+        print(self.scope)
         async_to_sync(self.channel_layer.group_add)(self.room_name, self.channel_name)
         self.accept()
 
@@ -27,4 +28,5 @@ class WebsocketConsumer(WebsocketConsumer):
         )
 
     def send_message(self, event):
-        self.send(text_data=json.dumps(event))
+        print("event", event)
+        # self.send(text_data=json.dumps(event))
