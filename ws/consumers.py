@@ -15,15 +15,19 @@ class WebsocketConsumer(WebsocketConsumer):
 
         self.subscription_manager = SubscriptionManager()
 
-    @property
-    def room_name(self):
+    def get_room_name(self):
         query_string = self.scope["query_string"].decode("utf-8")
         query_params = parse_qs(query_string)
         room_id = query_params.get("room_id", [None])[0]
 
+        if not room_id:
+            raise Exception("room_id is required")
+
         return f"ticker.{room_id}"
 
     def connect(self):
+        self.room_name = self.get_room_name()
+
         async_to_sync(self.channel_layer.group_add)(self.room_name, self.channel_name)
 
         self.accept()
