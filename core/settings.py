@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_breeze",
+    "ws",
 ]
 
 MIDDLEWARE = [
@@ -129,7 +130,7 @@ DJANGO_BREEZE = {
         "SSR_ENABLED": False,
     },
     "DJANGO_VITE": {
-        "DEV_MODE": False,  # vite dev mode, default based on django DEBUG
+        "DEV_MODE": True,  # vite dev mode, default based on django DEBUG
         "SERVER_PROTOCOL": "http",
         "DEV_SERVER_HOST": "localhost",
         "DEV_SERVER_PORT": 5173,
