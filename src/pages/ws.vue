@@ -5,3 +5,14 @@
     chat
   </div>
 </template>
+
+<script lang="ts">
+const url = `ws://${window.location.host}/ws`;
+
+const websocket = new WebSocket(url);
+
+websocket.onmessage = function (e) {
+  const data = JSON.parse(e.data);
+  console.log({ data });
+};
+</script>
