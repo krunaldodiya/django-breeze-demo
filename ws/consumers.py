@@ -20,9 +20,6 @@ class WebsocketConsumer(WebsocketConsumer):
         query_params = parse_qs(query_string)
         room_id = query_params.get("room_id", [None])[0]
 
-        if not room_id:
-            raise Exception("room_id is required")
-
         return f"ticker.{room_id}"
 
     def connect(self):
