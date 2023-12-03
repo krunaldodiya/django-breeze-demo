@@ -26,7 +26,8 @@ socket.onclose = () => {
 };
 
 const submit = (e: Event) => {
-  console.log({ message: form.message });
+  const message = JSON.stringify({ message: form.message });
+  socket.send(message);
 };
 </script>
 

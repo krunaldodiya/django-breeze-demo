@@ -6,8 +6,15 @@ from asgiref.sync import async_to_sync
 
 from channels.generic.websocket import WebsocketConsumer
 
+from services.subscription_manager import SubscriptionManager
+
 
 class WebsocketConsumer(WebsocketConsumer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.subscription_manager = SubscriptionManager()
+
     @property
     def room_name(self):
         query_string = self.scope["query_string"].decode("utf-8")
@@ -18,12 +25,14 @@ class WebsocketConsumer(WebsocketConsumer):
 
     def connect(self):
         async_to_sync(self.channel_layer.group_add)(self.room_name, self.channel_name)
+
         self.accept()
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
             self.room_name, self.channel_name
         )
+
         self.close()
 
     def receive(self, text_data):
@@ -35,5 +44,4 @@ class WebsocketConsumer(WebsocketConsumer):
         )
 
     def send_message(self, event):
-        print("event", event)
-        # self.send(text_data=json.dumps(event))
+        self.send(text_data=json.dumps(event))
