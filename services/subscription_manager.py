@@ -1,4 +1,3 @@
-import asyncio
 import os
 import threading
 import pyotp
@@ -55,16 +54,19 @@ class SubscriptionManager:
     def start_connection(self):
         threading.Thread(target=self.connect).start()
 
-    def stop_connection(self):
-        self.ws_client.close_connection()
+    def close_connection(self):
+        self.shutdown_flag.set()
 
     def connect(self):
-        self.ws_client.on_open = self.on_open
-        self.ws_client.on_error = self.on_error
-        self.ws_client.on_close = self.on_close
-        self.ws_client.on_data = self.on_data
+        while not self.shutdown_flag.is_set():
+            self.ws_client.on_open = self.on_open
+            self.ws_client.on_error = self.on_error
+            self.ws_client.on_close = self.on_close
+            self.ws_client.on_data = self.on_data
 
-        self.ws_client.connect()
+            self.ws_client.connect()
+        else:
+            self.ws_client.close_connection()
 
     def on_open(self, wsapp):
         pass
