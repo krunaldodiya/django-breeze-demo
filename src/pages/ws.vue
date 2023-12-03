@@ -5,13 +5,24 @@ const form = useForm({
   message: '',
 });
 
-const url = `ws://${window.location.host}/ws/ticker/1`;
+const url = `ws://${window.location.host}/ws/ticker?room_id=1`;
 
-const websocket = new WebSocket(url);
+const socket = new WebSocket(url);
 
-websocket.onmessage = function (e) {
-  const data = JSON.parse(e.data);
-  console.log({ data });
+socket.onopen = () => {
+  console.log('WebSocket connected');
+};
+
+socket.onerror = (error) => {
+  console.error('WebSocket error:', error);
+};
+
+socket.onmessage = (event) => {
+  console.log('Received message:', event.data);
+};
+
+socket.onclose = () => {
+  console.log('WebSocket closed');
 };
 
 const submit = (e: Event) => {

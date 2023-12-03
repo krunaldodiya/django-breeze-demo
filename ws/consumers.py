@@ -1,15 +1,22 @@
 import json
 
+from urllib.parse import parse_qs
+
 from asgiref.sync import async_to_sync
 
 from channels.generic.websocket import WebsocketConsumer
 
 
 class WebsocketConsumer(WebsocketConsumer):
-    room_name = "ticker"
+    @property
+    def room_name(self):
+        query_string = self.scope["query_string"].decode("utf-8")
+        query_params = parse_qs(query_string)
+        room_id = query_params.get("room_id", [None])[0]
+
+        return f"ticker.{room_id}"
 
     def connect(self):
-        print(self.scope)
         async_to_sync(self.channel_layer.group_add)(self.room_name, self.channel_name)
         self.accept()
 
