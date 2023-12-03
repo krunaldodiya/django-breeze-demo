@@ -29,10 +29,14 @@ class WebsocketConsumer(WebsocketConsumer):
 
         async_to_sync(self.channel_layer.group_add)(self.room_id, self.channel_name)
 
+        self.subscription_manager.start_connection()
+
         self.accept()
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(self.room_id, self.channel_name)
+
+        self.subscription_manager.stop_connection()
 
     def receive(self, text_data):
         if text_data.startswith("subscribe:"):
@@ -40,8 +44,6 @@ class WebsocketConsumer(WebsocketConsumer):
 
             for topic in topics:
                 response = self.subscription_manager.subscribe_topic(topic)
-
-                print(response)
 
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_id, {"type": "send_message", "message": response}

@@ -1,13 +1,10 @@
+import asyncio
 import os
-
 import threading
-
 import pyotp
 
 from typing import Dict, List
-
 from SmartApi.smartConnect import SmartConnect
-
 from SmartApi.smartWebSocketV2 import SmartWebSocketV2
 
 
@@ -46,14 +43,40 @@ class SubscriptionManager:
             self.get_totp(self.totp_key),
         )
 
-        sws = SmartWebSocketV2(
+        sws_client = SmartWebSocketV2(
             session["data"]["jwtToken"],
             self.api_key,
             self.client_id,
             self.http_client.getfeedToken(),
         )
 
-        return sws
+        return sws_client
+
+    def start_connection(self):
+        threading.Thread(target=self.connect).start()
+
+    def stop_connection(self):
+        self.ws_client.close_connection()
+
+    def connect(self):
+        self.ws_client.on_open = self.on_open
+        self.ws_client.on_error = self.on_error
+        self.ws_client.on_close = self.on_close
+        self.ws_client.on_data = self.on_data
+
+        self.ws_client.connect()
+
+    def on_open(self, wsapp):
+        pass
+
+    def on_error(self, wsapp, error):
+        pass
+
+    def on_close(self, wsapp):
+        pass
+
+    def on_data(self, wsapp, message):
+        pass
 
     def get_token_list(self, topic):
         token_data = topic.split("_")
