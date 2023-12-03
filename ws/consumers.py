@@ -6,7 +6,7 @@ from channels.generic.websocket import WebsocketConsumer
 
 
 class WebsocketConsumer(WebsocketConsumer):
-    room_name = "market_watch"
+    room_name = "ticker"
 
     def connect(self):
         async_to_sync(self.channel_layer.group_add)(self.room_name, self.channel_name)

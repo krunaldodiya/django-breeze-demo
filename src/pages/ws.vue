@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-const url = `ws://${window.location.host}/ws`;
+const url = `ws://${window.location.host}/ws/ticker`;
 
 const websocket = new WebSocket(url);
 

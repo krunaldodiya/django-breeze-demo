@@ -9,5 +9,5 @@ urlpatterns = [
 ]
 
 websocket_urlpatterns = [
-    re_path(r"ws/", WebsocketConsumer.as_asgi()),
+    re_path(r"ticker", WebsocketConsumer.as_asgi()),
 ]

@@ -4,3 +4,4 @@ inertia-django
 django-vite
 django-breeze
 channels
+channels-redis
