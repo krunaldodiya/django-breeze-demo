@@ -3,6 +3,8 @@ import threading
 import pyotp
 
 from typing import Dict, List
+from datetime import datetime
+
 from SmartApi.smartConnect import SmartConnect
 from SmartApi.smartWebSocketV2 import SmartWebSocketV2
 
@@ -25,7 +27,7 @@ class SubscriptionManager:
 
         self.http_client = self.get_http_client()
 
-        self.ws_client = self.get_sws_client()
+        self.ws_clients = {}
 
         self.connected = False
 
@@ -37,21 +39,31 @@ class SubscriptionManager:
     def get_http_client(self):
         return SmartConnect(self.api_key)
 
-    def get_sws_client(self):
-        session = self.http_client.generateSession(
-            self.client_id,
-            self.mpin,
-            self.get_totp(self.totp_key),
-        )
+    @property
+    def ws_client(self):
+        try:
+            today = datetime.today().strftime("%Y-%m-%d")
 
-        sws_client = SmartWebSocketV2(
-            session["data"]["jwtToken"],
-            self.api_key,
-            self.client_id,
-            self.http_client.getfeedToken(),
-        )
+            return self.ws_clients[today]
+        except KeyError:
+            self.ws_clients = {}
 
-        return sws_client
+            session = self.http_client.generateSession(
+                self.client_id,
+                self.mpin,
+                self.get_totp(self.totp_key),
+            )
+
+            ws_client = SmartWebSocketV2(
+                session["data"]["jwtToken"],
+                self.api_key,
+                self.client_id,
+                self.http_client.getfeedToken(),
+            )
+
+            self.ws_clients[today] = ws_client
+
+            return ws_client
 
     def start_connection(self):
         if not self.connected:
