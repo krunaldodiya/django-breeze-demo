@@ -7,7 +7,7 @@ const form = useForm({
 
 const room_name = `ticker.1`;
 
-const url = `ws://${window.location.host}/ws/ticker/${room_name}`;
+const url = `ws://${window.location.host}/ws/${room_name}`;
 
 const socket = new WebSocket(url);
 
