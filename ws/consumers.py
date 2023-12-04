@@ -21,7 +21,7 @@ class WebsocketConsumer(WebsocketConsumer):
         self.user = self.scope["user"]
 
         if not self.user.is_authenticated:
-            self.send(text_data=json.dumps({"error": "Unauthorized"}))
+            self.close(code=401)
         else:
             self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
 
@@ -34,11 +34,12 @@ class WebsocketConsumer(WebsocketConsumer):
             self.accept()
 
     def disconnect(self, close_code):
-        async_to_sync(self.channel_layer.group_discard)(
-            self.room_name, self.channel_name
-        )
+        if self.room_name:
+            async_to_sync(self.channel_layer.group_discard)(
+                self.room_name, self.channel_name
+            )
 
-        self.subscription_manager.stop_connection()
+            self.subscription_manager.stop_connection()
 
     def receive(self, text_data):
         if text_data.startswith("subscribe:"):

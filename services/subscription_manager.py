@@ -29,8 +29,6 @@ class SubscriptionManager:
 
         self.ws_clients = {}
 
-        self.connected = False
-
         self.room_names: Dict[str, List] = {}
 
     def get_totp(self, totp_key):
@@ -66,14 +64,11 @@ class SubscriptionManager:
             return ws_client
 
     def start_connection(self):
-        if not self.connected:
-            self.connected = True
-            threading.Thread(target=self.connect, daemon=True).start()
+        threading.Thread(target=self.connect, daemon=True).start()
 
     def stop_connection(self):
-        if self.connected:
-            self.connected = False
-            self.shutdown_flag.set()
+        self.shutdown_flag.set()
+        self.room_names[self.ws_consumer.room_name] = []
 
     def connect(self):
         while not self.shutdown_flag.is_set():
