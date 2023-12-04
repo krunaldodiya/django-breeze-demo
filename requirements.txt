@@ -6,6 +6,7 @@ django-vite
 django-breeze
 channels
 channels-redis
+django-channels-jwt-auth-middleware
 smartapi-python
 logzero
 websocket-client
