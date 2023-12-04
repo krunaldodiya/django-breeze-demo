@@ -27,7 +27,9 @@ class SubscriptionManager:
 
         self.ws_client = self.get_sws_client()
 
-        self.room_ids: Dict[str, List] = {}
+        self.connected = False
+
+        self.room_names: Dict[str, List] = {}
 
     def get_totp(self, totp_key):
         return pyotp.TOTP(totp_key).now()
@@ -52,10 +54,14 @@ class SubscriptionManager:
         return sws_client
 
     def start_connection(self):
-        threading.Thread(target=self.connect).start()
+        if not self.connected:
+            self.connected = True
+            threading.Thread(target=self.connect, daemon=True).start()
 
-    def close_connection(self):
-        self.shutdown_flag.set()
+    def stop_connection(self):
+        if self.connected:
+            self.connected = False
+            self.shutdown_flag.set()
 
     def connect(self):
         while not self.shutdown_flag.is_set():
@@ -78,7 +84,7 @@ class SubscriptionManager:
         pass
 
     def on_data(self, wsapp, message):
-        pass
+        print(message)
 
     def get_token_list(self, topic):
         token_data = topic.split("_")
@@ -103,7 +109,7 @@ class SubscriptionManager:
 
     def subscribe_topic(self, topic):
         try:
-            topics = self.room_ids.setdefault(self.ws_consumer.room_id, [])
+            topics = self.room_names.setdefault(self.ws_consumer.room_name, [])
 
             if topic in topics:
                 return "already subscribed"

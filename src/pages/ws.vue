@@ -2,10 +2,12 @@
 import { useForm } from '@inertiajs/vue3';
 
 const form = useForm({
-  message: '',
+  message: 'subscribe:1_26000',
 });
 
-const url = `ws://${window.location.host}/ws/ticker?room_id=1`;
+const room_name = `ticker.1`;
+
+const url = `ws://${window.location.host}/ws/ticker/${room_name}`;
 
 const socket = new WebSocket(url);
 
