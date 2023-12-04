@@ -1,6 +1,7 @@
 python-dotenv
-django
 uvicorn[standard]
+django
+djangorestframework
 inertia-django
 django-vite
 django-breeze

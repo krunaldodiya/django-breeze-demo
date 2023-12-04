@@ -11,18 +11,27 @@ class WebsocketConsumer(WebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.user = None
+
         self.room_name = None
 
         self.subscription_manager = SubscriptionManager(self)
 
     def connect(self):
-        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
+        self.user = self.scope["user"]
 
-        async_to_sync(self.channel_layer.group_add)(self.room_name, self.channel_name)
+        if not self.user.is_authenticated:
+            self.send(text_data=json.dumps({"error": "Unauthorized"}))
+        else:
+            self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
 
-        self.subscription_manager.start_connection()
+            async_to_sync(self.channel_layer.group_add)(
+                self.room_name, self.channel_name
+            )
 
-        self.accept()
+            self.subscription_manager.start_connection()
+
+            self.accept()
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
