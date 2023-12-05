@@ -14,10 +14,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-)nu1-l14l4^^&ly^+r)&li0=+f%j!@gc99knk^8fbi3)^92+$!"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.getenv("DEBUG", default=1))
 
 ALLOWED_HOSTS = ["*"]
 
@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "django_breeze",
-    "ws",
+    "home",
 ]
 
 MIDDLEWARE = [
