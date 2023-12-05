@@ -126,10 +126,6 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATIC_ROOT = "static"
-
-STATICFILES_DIR = [BASE_DIR / "static" / "dist"]
-
 DJANGO_BREEZE = {
     "INERTIA": {
         "LAYOUT": "index.html",
@@ -137,7 +133,7 @@ DJANGO_BREEZE = {
         "SSR_ENABLED": False,
     },
     "DJANGO_VITE": {
-        "DEV_MODE": True,  # vite dev mode, default based on django DEBUG
+        "DEV_MODE": os.getenv("DEBUG"),  # vite dev mode, default based on django DEBUG
         "SERVER_PROTOCOL": "http",
         "DEV_SERVER_HOST": "localhost",
         "DEV_SERVER_PORT": 5173,
