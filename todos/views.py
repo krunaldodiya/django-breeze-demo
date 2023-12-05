@@ -1,9 +1,13 @@
+import json
 from inertia import render
 from django.shortcuts import redirect
+from todos.models import Todo
 
 
 def list_todos(request):
-    return render(request, "todos/list")
+    todos = Todo.objects.all()
+
+    return render(request, "todos/list", {"todos": todos})
 
 
 def create_todo(request):
@@ -11,4 +15,8 @@ def create_todo(request):
 
 
 def store_todo(request):
-    return redirect("/todos/create")
+    data = json.loads(request.body)
+
+    Todo.objects.create(name=data["name"])
+
+    return redirect("/todos")
