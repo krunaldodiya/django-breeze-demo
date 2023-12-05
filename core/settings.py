@@ -128,6 +128,8 @@ STATIC_URL = "static/"
 
 STATIC_ROOT = "static"
 
+STATICFILES_DIR = [BASE_DIR / "static" / "dist"]
+
 DJANGO_BREEZE = {
     "INERTIA": {
         "LAYOUT": "index.html",
